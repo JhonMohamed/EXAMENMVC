@@ -1,0 +1,42 @@
+﻿@model IEnumerable<EXAMENMVC.Models.Marca>
+
+@{
+    ViewData["Title"] = "Lista de Marcas";
+}
+
+<h1>Lista de Marcas</h1>
+
+<p>
+    <a asp-action="Create">Crear Nueva Marca</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDMARCA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NOM_MARCA)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.IDMARCA)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NOM_MARCA)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IDMARCA">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.IDMARCA">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IDMARCA">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

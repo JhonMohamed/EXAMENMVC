@@ -1,0 +1,34 @@
+﻿@model EXAMENMVC.Models.Marca
+
+@{
+    ViewData["Title"] = "Editar Marca";
+}
+
+<h1>Editar Marca</h1>
+
+<h4>Marca</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IDMARCA" />
+            <div class="form-group">
+                <label asp-for="NOM_MARCA" class="control-label"></label>
+                <input asp-for="NOM_MARCA" class="form-control" />
+                <span asp-validation-for="NOM_MARCA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Actualizar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver atras</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

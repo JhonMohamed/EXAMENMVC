@@ -1,0 +1,101 @@
+﻿@model DropDownsVM
+
+<div class="text-center">
+    <h1 class="display-4">Vehículos</h1>
+    <p>Desarrollado por <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <label for="marcasDropdown">Marca:</label>
+        <select id="marcasDropdown" class="form-control">
+            <option value="">Seleccione una Marca</option>
+            @foreach (var marca in Model.Marcas)
+            {
+                <option value="@marca.IDMARCA">@marca.NOM_MARCA</option>
+            }
+        </select>
+    </div>
+    <div class="col-4">
+        <label for="modeloDropdown">Modelo:</label>
+        <select id="modeloDropdown" class="form-control" disabled>
+            <option value="">Seleccione un Modelo</option>
+        </select>
+    </div>
+
+    <div class="col-4">
+        <label for="vehiculoDropdown">Vehículo:</label>
+        <select id="vehiculoDropdown" class="form-control" disabled>
+            <option value="">Seleccione un Vehículo</option>
+        </select>
+    </div>
+</div>
+<a asp-action="Crear">Crear nuevo vehículo</a>
+<!-- Tabla de vehículos -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Vehículo</th>
+            <th>Número de Placa</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Color</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehiculo in Model.Vehiculos)
+        {
+            <tr>
+                <td>@vehiculo.IDVEHICULO</td>
+                <td>@vehiculo.NRO_PLACA</td>
+                <td>@vehiculo.Modelo.Marca.NOM_MARCA</td>
+                <td>@vehiculo.Modelo.NOM_MODELO</td>
+                <td>@vehiculo.año.ToString("yyyy")</td>
+                <td>@vehiculo.Color</td>
+                <td>
+                    <!-- Agregar enlace para editar -->
+                    <a asp-action="Editar" asp-route-id="@vehiculo.IDVEHICULO">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<!-- Script jQuery para manejar la selección de marca y carga de modelos -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#marcasDropdown").change(function () {
+            var ID_MARCA = $(this).val();
+
+            // Limpiar dropdown de modelos
+            $("#modeloDropdown").empty().append("<option value=''>Seleccione un Modelo</option>").prop("disabled", true);
+
+            if (ID_MARCA) {
+                $.ajax({
+                    url: "/Home/ObtenerModelos",
+                    type: "GET",
+                    data: { IDMARCA: ID_MARCA }, // Pasar IDMARCA al controlador
+                    success: function (modelos) {
+                        // Limpiar dropdown de modelos
+                        $("#modeloDropdown").empty().append("<option value=''>Seleccione un Modelo</option>");
+
+                        // Agregar modelos al dropdown
+                        $.each(modelos, function (index, modelo) {
+                            $("#modeloDropdown").append("<option value='" + modelo.IDMODELO + "'>" + modelo.NOM_MODELO + "</option>");
+                        });
+
+                        // Habilitar dropdown de modelos
+                        $("#modeloDropdown").prop("disabled", false);
+                    },
+                    error: function () {
+                        console.log("Error al obtener modelos");
+                    }
+                });
+            }
+        });
+    });
+</script>
