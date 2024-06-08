@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using EXAMENMVC.Datos;
 using EXAMENMVC.Models;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -53,7 +52,6 @@ namespace EXAMENMVC.Controllers
         public IActionResult Create()
         {
             ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
-            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO");
             return View();
         }
 
@@ -77,8 +75,17 @@ namespace EXAMENMVC.Controllers
             }
 
             ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
-            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO");
             return View(vehiculo);
+        }
+
+        // Acción para obtener modelos basados en la marca seleccionada
+        public JsonResult ObtenerModelos(int idMarca)
+        {
+            var modelos = _context.Modelos
+                .Where(m => m.MarcaIDMARCA == idMarca)
+                .Select(m => new { idModelo = m.IDMODELO, noM_MODELO = m.NOM_MODELO })
+                .ToList();
+            return Json(modelos);
         }
 
         // GET: Vehiculos/Edit/5
@@ -89,10 +96,7 @@ namespace EXAMENMVC.Controllers
                 return NotFound();
             }
 
-            var vehiculo = await _context.Vehiculos
-                .Include(v => v.Modelo)
-                .FirstOrDefaultAsync(m => m.IDVEHICULO == id);
-
+            var vehiculo = await _context.Vehiculos.FindAsync(id);
             if (vehiculo == null)
             {
                 return NotFound();
@@ -100,7 +104,6 @@ namespace EXAMENMVC.Controllers
 
             ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
             ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
-
             return View(vehiculo);
         }
 
