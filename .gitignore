@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/EXAMENMVC/appsettings.json
+/EXAMENMVC/Migrations/20240608042722_Migracion.cs
