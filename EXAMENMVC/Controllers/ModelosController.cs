@@ -65,7 +65,7 @@ namespace EXAMENMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ID_MARCA"] = new SelectList(_context.Marcas, "IDMARCA", "IDMARCA", modelo.ID_MARCA);
+            ViewData["ID_MARCA"] = new SelectList(_context.Marcas, "IDMARCA", "IDMARCA", modelo.MarcaIDMARCA);
             return View(modelo);
         }
 
@@ -82,7 +82,7 @@ namespace EXAMENMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["ID_MARCA"] = new SelectList(_context.Marcas, "IDMARCA", "IDMARCA", modelo.ID_MARCA);
+            ViewData["ID_MARCA"] = new SelectList(_context.Marcas, "IDMARCA", "IDMARCA", modelo.MarcaIDMARCA);
             return View(modelo);
         }
 
@@ -118,7 +118,7 @@ namespace EXAMENMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ID_MARCA"] = new SelectList(_context.Marcas, "IDMARCA", "IDMARCA", modelo.ID_MARCA);
+            ViewData["ID_MARCA"] = new SelectList(_context.Marcas, "IDMARCA", "IDMARCA", modelo.MarcaIDMARCA);
             return View(modelo);
         }
 

@@ -64,7 +64,7 @@ namespace EXAMENMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDMODELO"), 1L, 1);
 
-                    b.Property<int>("ID_MARCA")
+                    b.Property<int>("MarcaIDMARCA")
                         .HasColumnType("int");
 
                     b.Property<string>("NOM_MODELO")
@@ -73,7 +73,7 @@ namespace EXAMENMVC.Migrations
 
                     b.HasKey("IDMODELO");
 
-                    b.HasIndex("ID_MARCA");
+                    b.HasIndex("MarcaIDMARCA");
 
                     b.ToTable("Modelos");
 
@@ -81,37 +81,37 @@ namespace EXAMENMVC.Migrations
                         new
                         {
                             IDMODELO = 1,
-                            ID_MARCA = 1,
+                            MarcaIDMARCA = 1,
                             NOM_MODELO = "Corolla"
                         },
                         new
                         {
                             IDMODELO = 2,
-                            ID_MARCA = 1,
+                            MarcaIDMARCA = 1,
                             NOM_MODELO = "Camry"
                         },
                         new
                         {
                             IDMODELO = 3,
-                            ID_MARCA = 2,
+                            MarcaIDMARCA = 2,
                             NOM_MODELO = "Civic"
                         },
                         new
                         {
                             IDMODELO = 4,
-                            ID_MARCA = 2,
+                            MarcaIDMARCA = 2,
                             NOM_MODELO = "Accord"
                         },
                         new
                         {
                             IDMODELO = 5,
-                            ID_MARCA = 3,
+                            MarcaIDMARCA = 3,
                             NOM_MODELO = "Focus"
                         },
                         new
                         {
                             IDMODELO = 6,
-                            ID_MARCA = 3,
+                            MarcaIDMARCA = 3,
                             NOM_MODELO = "Mustang"
                         });
                 });
@@ -128,7 +128,7 @@ namespace EXAMENMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ModeloIDMODELO")
+                    b.Property<int>("ModeloIDMODELO")
                         .HasColumnType("int");
 
                     b.Property<string>("NRO_PLACA")
@@ -141,9 +141,6 @@ namespace EXAMENMVC.Migrations
                     b.Property<bool>("estado")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("idModelo")
-                        .HasColumnType("int");
-
                     b.HasKey("IDVEHICULO");
 
                     b.HasIndex("ModeloIDMODELO");
@@ -155,55 +152,55 @@ namespace EXAMENMVC.Migrations
                         {
                             IDVEHICULO = 1,
                             Color = "Morado",
+                            ModeloIDMODELO = 1,
                             NRO_PLACA = "ABC123",
                             año = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            estado = true,
-                            idModelo = 1
+                            estado = true
                         },
                         new
                         {
                             IDVEHICULO = 2,
                             Color = "Azul",
+                            ModeloIDMODELO = 2,
                             NRO_PLACA = "XYZ789",
                             año = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            estado = true,
-                            idModelo = 2
+                            estado = true
                         },
                         new
                         {
                             IDVEHICULO = 3,
                             Color = "Rojo",
+                            ModeloIDMODELO = 3,
                             NRO_PLACA = "LMN456",
                             año = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            estado = true,
-                            idModelo = 3
+                            estado = true
                         },
                         new
                         {
                             IDVEHICULO = 4,
                             Color = "Blanco",
+                            ModeloIDMODELO = 4,
                             NRO_PLACA = "QRS852",
                             año = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            estado = true,
-                            idModelo = 4
+                            estado = true
                         },
                         new
                         {
                             IDVEHICULO = 5,
                             Color = "Negro",
+                            ModeloIDMODELO = 5,
                             NRO_PLACA = "GHI789",
                             año = new DateTime(2017, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            estado = true,
-                            idModelo = 5
+                            estado = true
                         },
                         new
                         {
                             IDVEHICULO = 6,
                             Color = "Verde",
+                            ModeloIDMODELO = 6,
                             NRO_PLACA = "JKL321",
                             año = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            estado = true,
-                            idModelo = 6
+                            estado = true
                         });
                 });
 
@@ -211,7 +208,7 @@ namespace EXAMENMVC.Migrations
                 {
                     b.HasOne("EXAMENMVC.Models.Marca", "Marca")
                         .WithMany("Modelos")
-                        .HasForeignKey("ID_MARCA")
+                        .HasForeignKey("MarcaIDMARCA")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -222,7 +219,9 @@ namespace EXAMENMVC.Migrations
                 {
                     b.HasOne("EXAMENMVC.Models.Modelo", "Modelo")
                         .WithMany("Vehiculos")
-                        .HasForeignKey("ModeloIDMODELO");
+                        .HasForeignKey("ModeloIDMODELO")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Modelo");
                 });

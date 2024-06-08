@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using EXAMENMVC.Datos;
 using EXAMENMVC.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,14 +21,17 @@ namespace EXAMENMVC.Controllers
         // GET: Vehiculos
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Vehiculos.Include(v => v.Modelo.Marca);
-            return View(await applicationDbContext.ToListAsync());
+            var vehiculos = _context.Vehiculos
+                .Include(v => v.Modelo)
+                .ThenInclude(m => m.Marca);
+
+            return View(await vehiculos.ToListAsync());
         }
 
         // GET: Vehiculos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Vehiculos == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -36,6 +40,7 @@ namespace EXAMENMVC.Controllers
                 .Include(v => v.Modelo)
                 .ThenInclude(m => m.Marca)
                 .FirstOrDefaultAsync(m => m.IDVEHICULO == id);
+
             if (vehiculo == null)
             {
                 return NotFound();
@@ -48,12 +53,7 @@ namespace EXAMENMVC.Controllers
         public IActionResult Create()
         {
             ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
-            ViewBag.Modelo = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO");
-            // Obtén las marcas desde la base de datos
-            var marcas = _context.Marcas.ToList();
-
-            // Pasa las marcas a la vista usando ViewBag
-            ViewBag.Marcas = new SelectList(marcas, "IDMARCA", "NOM_MARCA");
+            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO");
             return View();
         }
 
@@ -68,58 +68,39 @@ namespace EXAMENMVC.Controllers
                 {
                     _context.Add(vehiculo);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index)); // Redirigir a la acción Index
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    // Manejo de errores si es necesario
                     ModelState.AddModelError("", "Error al guardar el vehículo: " + ex.Message);
-                    // Recargar las listas para los dropdowns en caso de error
-                    var marcas = _context.Marcas.ToList();
-                    ViewBag.Marcas = new SelectList(marcas, "IDMARCA", "NOM_MARCA");
-                    return View(vehiculo);
                 }
             }
 
-            // Recargar las listas para los dropdowns en caso de error
-            var marcasList = _context.Marcas.ToList();
-            ViewBag.Marcas = new SelectList(marcasList, "IDMARCA", "NOM_MARCA");
-
+            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
+            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO");
             return View(vehiculo);
         }
 
-        // Método para obtener modelos basados en una marca específica
-        //public async Task<IActionResult> ObtenerModelos(int idMarca)
-        //{
-           
-        //        var modelos = await _context.Modelos
-        //            .Where(m => m.ID_MARCA == idMarca)
-        //            .Select(m => new
-        //            {
-        //                IDMODELO = m.IDMODELO,
-        //                NOM_MODELO = m.NOM_MODELO
-        //            })
-        //            .ToListAsync();
-
-        //        return Json(modelos);
-        //    }
-        
         // GET: Vehiculos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Vehiculos == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var vehiculo = await _context.Vehiculos
                 .Include(v => v.Modelo)
-                .ThenInclude(m => m.Marca)
                 .FirstOrDefaultAsync(m => m.IDVEHICULO == id);
+
             if (vehiculo == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
+            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
+
             return View(vehiculo);
         }
 
@@ -139,6 +120,7 @@ namespace EXAMENMVC.Controllers
                 {
                     _context.Update(vehiculo);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -151,15 +133,17 @@ namespace EXAMENMVC.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
+            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
             return View(vehiculo);
         }
 
         // GET: Vehiculos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Vehiculos == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -168,6 +152,7 @@ namespace EXAMENMVC.Controllers
                 .Include(v => v.Modelo)
                 .ThenInclude(m => m.Marca)
                 .FirstOrDefaultAsync(m => m.IDVEHICULO == id);
+
             if (vehiculo == null)
             {
                 return NotFound();
@@ -181,35 +166,21 @@ namespace EXAMENMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Vehiculos == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Vehiculos'  is null.");
-            }
             var vehiculo = await _context.Vehiculos.FindAsync(id);
-            if (vehiculo != null)
+            if (vehiculo == null)
             {
-                _context.Vehiculos.Remove(vehiculo);
+                return NotFound();
             }
 
+            _context.Vehiculos.Remove(vehiculo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // Método para verificar la existencia de un vehículo
         private bool VehiculoExists(int id)
         {
-            return (_context.Vehiculos?.Any(e => e.IDVEHICULO == id)).GetValueOrDefault();
+            return _context.Vehiculos.Any(e => e.IDVEHICULO == id);
         }
-
-
-        [HttpGet]
-        public JsonResult ObtenerModelos(int idMarca)
-        {
-            var modelos = _context.Modelos
-                .Where(m => m.ID_MARCA == idMarca)
-                .Select(m => new { idModelo = m.IDMODELO, nomModelo = m.NOM_MODELO })
-                .ToList();
-            return Json(modelos);
-        }
-
     }
 }

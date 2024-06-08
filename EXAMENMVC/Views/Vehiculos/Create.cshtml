@@ -40,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Modelo</label>
-                <select id="modeloDropdown" class="form-control" asp-for="Modelo.IDMODELO" disabled >
+                <select id="modeloDropdown" class="form-control" asp-for="ModeloIDMODELO" disabled >
                     <option value="">Seleccione un Modelo</option>
                 </select>
             </div>
@@ -69,7 +69,7 @@
                         success: function (data) {
                             // $('#modeloDropdown').append('<option value="">Seleccione un Modelo</option>');
                             $.each(data, function (i, modelo) {
-                                $('#modeloDropdown').append('<option value="' + modelo.idModelo + '">' + modelo.nomModelo + '</option>');
+                                $('#modeloDropdown').append('<option value="' + modelo.idModelo + '">' + modelo.noM_MODELO + '</option>');
                             });
                             $("#modeloDropdown").prop("disabled", false);
                         }

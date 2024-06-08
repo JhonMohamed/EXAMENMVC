@@ -45,7 +45,7 @@ namespace EXAMENMVC.Controllers
         [HttpGet]
         public JsonResult ObtenerModelos(int IDMARCA) // Ajusta el nombre del parámetro a IDMARCA
         {
-            var modelos = _contexto.Modelos.Where(x => x.ID_MARCA == IDMARCA).ToList();
+            var modelos = _contexto.Modelos.Where(x => x.MarcaIDMARCA == IDMARCA).ToList();
             return Json(modelos);
         }
     }

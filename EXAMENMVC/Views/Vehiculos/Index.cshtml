@@ -23,11 +23,9 @@
             <th>@Html.DisplayNameFor(model => model.Color)</th>
             <th>@Html.DisplayNameFor(model => model.estado)</th>
             <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+            @foreach (var item in Model)
+            {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.IDVEHICULO)</td>
                 <td>@Html.DisplayFor(modelItem => item.NRO_PLACA)</td>
@@ -42,6 +40,6 @@
                     <a asp-action="Delete" asp-route-id="@item.IDVEHICULO">Delete</a>
                 </td>
             </tr>
-        }
-    </tbody>
+            }
+        </tbody>
 </table>

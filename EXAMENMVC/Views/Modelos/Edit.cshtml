@@ -1,39 +1,52 @@
-﻿@model EXAMENMVC.Models.Modelo
+﻿@model EXAMENMVC.Models.Vehiculo
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editar Vehículo</h1>
 
-<h4>Modelo</h4>
+<h4>Vehiculo</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IDMODELO" />
+        <form asp-action="Edit" method="post">
             <div class="form-group">
-                <label asp-for="NOM_MODELO" class="control-label"></label>
-                <input asp-for="NOM_MODELO" class="form-control" />
-                <span asp-validation-for="NOM_MODELO" class="text-danger"></span>
+                <label asp-for="NRO_PLACA" class="control-label"></label>
+                <input asp-for="NRO_PLACA" class="form-control" />
+                <span asp-validation-for="NRO_PLACA" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ID_MARCA" class="control-label"></label>
-                <select asp-for="ID_MARCA" class="form-control" asp-items="ViewBag.ID_MARCA"></select>
-                <span asp-validation-for="ID_MARCA" class="text-danger"></span>
+                <label asp-for="año" class="control-label"></label>
+                <input asp-for="año" class="form-control" />
+                <span asp-validation-for="año" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="form-check">
+                    <input asp-for="estado" class="form-check-input" />
+                    <label class="form-check-label" asp-for="estado">Estado</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Color" class="control-label"></label>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Marca</label>
+                <select id="marcaDropdown" class="form-control" asp-items="ViewBag.Marcas">
+                    <option value="">Seleccione una Marca</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Modelo</label>
+                <select id="modeloDropdown" class="form-control" asp-for="ModeloIDMODELO" disabled>
+                    <option value="">Seleccione un Modelo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear Vehiculo" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

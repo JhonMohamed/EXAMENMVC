@@ -6,9 +6,10 @@ namespace EXAMENMVC.Models
     {
         [Key]
         public int IDMODELO { get; set; }
+        
         public string NOM_MODELO { get; set; }
 
-        public int ID_MARCA { get; set; }
+        public int MarcaIDMARCA { get; set; }
 
         // Propiedad de navegación hacia la clase Marca
         public Marca Marca { get; set; }

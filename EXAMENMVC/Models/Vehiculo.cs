@@ -13,7 +13,7 @@ namespace EXAMENMVC.Models
         public string Color { get; set; }
 
         // Cambia el nombre de la propiedad a ModeloIDMODELO
-        public int? idModelo { get; set; }
+        public int ModeloIDMODELO { get; set; }
         // Propiedad de navegación hacia la clase Modelo
         public Modelo? Modelo { get; set; }
     }
