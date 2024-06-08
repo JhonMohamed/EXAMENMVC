@@ -96,14 +96,18 @@ namespace EXAMENMVC.Controllers
                 return NotFound();
             }
 
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
+            var vehiculo = await _context.Vehiculos
+                .Include(v => v.Modelo)
+                .ThenInclude(m => m.Marca)
+                .FirstOrDefaultAsync(v => v.IDVEHICULO == id);
+
             if (vehiculo == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
-            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
+            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA", vehiculo.Modelo.MarcaIDMARCA);
+            ViewBag.Modelos = new SelectList(_context.Modelos.Where(m => m.MarcaIDMARCA == vehiculo.Modelo.MarcaIDMARCA), "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
             return View(vehiculo);
         }
 
@@ -138,8 +142,8 @@ namespace EXAMENMVC.Controllers
                 }
             }
 
-            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA");
-            ViewBag.Modelos = new SelectList(_context.Modelos, "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
+            ViewBag.Marcas = new SelectList(_context.Marcas, "IDMARCA", "NOM_MARCA", vehiculo.Modelo.MarcaIDMARCA);
+            ViewBag.Modelos = new SelectList(_context.Modelos.Where(m => m.MarcaIDMARCA == vehiculo.Modelo.MarcaIDMARCA), "IDMODELO", "NOM_MODELO", vehiculo.ModeloIDMODELO);
             return View(vehiculo);
         }
 
