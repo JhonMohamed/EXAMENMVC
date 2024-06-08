@@ -12,14 +12,14 @@
     </a>
 </p>
 
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.IDVEHICULO)</th>
             <th>@Html.DisplayNameFor(model => model.NRO_PLACA)</th>
             <th>@Html.DisplayNameFor(model => model.Modelo.Marca.NOM_MARCA)</th>
             <th>@Html.DisplayNameFor(model => model.Modelo.NOM_MODELO)</th>
-            <th>@Html.DisplayNameFor(model => model.año)</th>
+            <th>Año</th>
             <th>@Html.DisplayNameFor(model => model.Color)</th>
             <th>@Html.DisplayNameFor(model => model.estado)</th>
             <th></th>
@@ -35,9 +35,9 @@
                 <td>@Html.DisplayFor(modelItem => item.Color)</td>
                 <td>@Html.DisplayFor(modelItem => item.estado)</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.IDVEHICULO">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IDVEHICULO">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IDVEHICULO">Delete</a>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IDVEHICULO">Editar</a> 
+                    <a class="btn btn-success" asp-action="Details" asp-route-id="@item.IDVEHICULO">Detalles</a> 
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.IDVEHICULO">Eliminar</a>
                 </td>
             </tr>
             }
