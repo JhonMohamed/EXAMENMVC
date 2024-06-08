@@ -4,45 +4,49 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalle Vehiculo</h1>
 
 <div>
-    <h4>Vehiculo</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NRO_PLACA)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NRO_PLACA)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.año)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.año)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.estado)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.estado)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Color)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Color)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modelo)
+        <dt class="col-sm-2">
+            Modelo
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modelo.IDMODELO)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Modelo.NOM_MODELO)
+        </dd>
+        <dt class="col-sm-2">
+            Marca
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Modelo.Marca.NOM_MARCA)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IDVEHICULO">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary ml-2">Volver atrás</a>
 </div>
