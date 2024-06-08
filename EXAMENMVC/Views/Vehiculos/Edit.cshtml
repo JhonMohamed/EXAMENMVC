@@ -19,16 +19,9 @@
                 <span asp-validation-for="NRO_PLACA" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Marca</label>
-                <select id="marcaDropdown" class="form-control" asp-items="ViewBag.Marcas">
-                    <option value="">Seleccione una Marca</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Modelo</label>
-                <select id="modeloDropdown" class="form-control" asp-for="ModeloIDMODELO">
-                    <option value="">Seleccione un Modelo</option>
-                </select>
+                <label asp-for="ModeloIDMODELO" class="control-label"></label>
+                <select asp-for="ModeloIDMODELO" class="form-control" asp-items="ViewBag.ModeloIDMODELO"></select>
+                <span asp-validation-for="ModeloIDMODELO" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="año" class="control-label"></label>
@@ -57,43 +50,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-    <script>
-        $(document).ready(function () {
-            var initialMarcaId = '@Model.Modelo.MarcaIDMARCA';
-
-            if (initialMarcaId) {
-                $('#marcaDropdown').val(initialMarcaId);
-                cargarModelos(initialMarcaId, '@Model.ModeloIDMODELO');
-            }
-
-            $('#marcaDropdown').change(function () {
-                var marcaId = $(this).val();
-                cargarModelos(marcaId, null);
-            });
-
-            function cargarModelos(marcaId, selectedModeloId) {
-                $("#modeloDropdown").empty().append('<option value="">Seleccione Modelo</option>').prop("disabled", true);
-
-                if (marcaId) {
-                    $.ajax({
-                        url: '/Vehiculos/ObtenerModelos',
-                        type: 'GET',
-                        data: { idMarca: marcaId },
-                        success: function (data) {
-                            $.each(data, function (i, modelo) {
-                                var option = $('<option></option>').attr("value", modelo.idModelo).text(modelo.noM_MODELO);
-                                if (modelo.idModelo == selectedModeloId) {
-                                    option.attr("selected", "selected");
-                                }
-                                $('#modeloDropdown').append(option);
-                            });
-                            $("#modeloDropdown").prop("disabled", false);
-                        }
-                    });
-                }
-            }
-        });
-    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
