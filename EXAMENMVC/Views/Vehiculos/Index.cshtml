@@ -1,11 +1,17 @@
 ﻿@model IEnumerable<EXAMENMVC.Models.Vehiculo>
+@using System.Security.Claims;
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>REGISTRO DE VEHICULOS</h1>
-
+@if (User.Identity!.IsAuthenticated)
+{
+    <h1 class="display-4">
+        Bienvenido
+        @User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
+    </h1>
+}
 <p>
     <a class="btn btn-success btn-lg" asp-action="Create">
         <i class="fas fa-plus-circle"></i> Nuevo Vehiculo
@@ -15,39 +21,50 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.IDVEHICULO)</th>
-            <th>@Html.DisplayNameFor(model => model.NRO_PLACA)</th>
-            <th>@Html.DisplayNameFor(model => model.Modelo.Marca.NOM_MARCA)</th>
-            <th>@Html.DisplayNameFor(model => model.Modelo.NOM_MODELO)</th>
-            <th>Año</th>
-            <th>@Html.DisplayNameFor(model => model.Color)</th>
-            <th>@Html.DisplayNameFor(model => model.estado)</th>
+           <th>IDVEHICULO</th>
+           <th>NRO_PLACA</th>
+           <th>NOM_MARCA</th>
+           <th>NOM_MODELO</th>
+            <th>año</th>
+           <th> Color</th>
+            <th>estado</th>
+            <th>Imagen</th> 
             <th></th>
-
-            @foreach (var item in Model)
-            {
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prod in Model)
+        {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.IDVEHICULO)</td>
-                <td>@Html.DisplayFor(modelItem => item.NRO_PLACA)</td>
-                <td>@Html.DisplayFor(modelItem => item.Modelo.Marca.NOM_MARCA)</td>
-                <td>@Html.DisplayFor(modelItem => item.Modelo.NOM_MODELO)</td>
-                <td>@Html.DisplayFor(modelItem => item.año)</td>
-                <td>@Html.DisplayFor(modelItem => item.Color)</td>
-                <td>@Html.DisplayFor(modelItem => item.estado)</td>
+                <td>@prod.IDVEHICULO)</td>
+                <td>@prod.NRO_PLACA)</td>
+                <td>@prod.Modelo.Marca.NOM_MARCA)</td>
+                <td>@prod.Modelo.NOM_MODELO)</td>
+                <td>@prod.año.ToString("dd/MMM/yyyy")</td>
+                <td>@prod.Color)</td>
+                <td>@prod.estado)</td>
                 <td>
-                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.IDVEHICULO">
+                    @if (!string.IsNullOrEmpty(prod.Imagen))
+                    {
+                        <img src="~/imagenes/@prod.Imagen" alt="Imagen de Vehículo" width="100" />
+                    }
+                    else
+                    {
+                        <span>No imagen</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@prod.IDVEHICULO">
                         <i class="fas fa-edit"></i> Editar
                     </a>
-                    <a class="btn btn-info btn-sm ml-2" asp-action="Details" asp-route-id="@item.IDVEHICULO">
+                    <a class="btn btn-info btn-sm ml-2" asp-action="Details" asp-route-id="@prod.IDVEHICULO">
                         <i class="fas fa-info-circle"></i> Detalles
                     </a>
-                    <a class="btn btn-danger btn-sm ml-2" asp-action="Delete" asp-route-id="@item.IDVEHICULO">
+                    <a class="btn btn-danger btn-sm ml-2" asp-action="Delete" asp-route-id="@prod.IDVEHICULO">
                         <i class="fas fa-trash-alt"></i> Eliminar
                     </a>
                 </td>
             </tr>
-            }
-        </tbody>
+        }
+    </tbody>
 </table>
-
-

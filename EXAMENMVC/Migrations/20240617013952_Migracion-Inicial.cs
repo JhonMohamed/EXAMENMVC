@@ -23,6 +23,21 @@ namespace EXAMENMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Clave = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Modelos",
                 columns: table => new
                 {
@@ -52,6 +67,7 @@ namespace EXAMENMVC.Migrations
                     año = table.Column<DateTime>(type: "datetime2", nullable: false),
                     estado = table.Column<bool>(type: "bit", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ModeloIDMODELO = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -95,15 +111,15 @@ namespace EXAMENMVC.Migrations
 
             migrationBuilder.InsertData(
                 table: "Vehiculos",
-                columns: new[] { "IDVEHICULO", "Color", "ModeloIDMODELO", "NRO_PLACA", "año", "estado" },
+                columns: new[] { "IDVEHICULO", "Color", "Imagen", "ModeloIDMODELO", "NRO_PLACA", "año", "estado" },
                 values: new object[,]
                 {
-                    { 1, "Morado", 1, "ABC123", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 2, "Azul", 2, "XYZ789", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 3, "Rojo", 3, "LMN456", new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 4, "Blanco", 4, "QRS852", new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 5, "Negro", 5, "GHI789", new DateTime(2017, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
-                    { 6, "Verde", 6, "JKL321", new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
+                    { 1, "Morado", null, 1, "ABC123", new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 2, "Azul", null, 2, "XYZ789", new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 3, "Rojo", null, 3, "LMN456", new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 4, "Blanco", null, 4, "QRS852", new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 5, "Negro", null, 5, "GHI789", new DateTime(2017, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true },
+                    { 6, "Verde", null, 6, "JKL321", new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true }
                 });
 
             migrationBuilder.CreateIndex(
@@ -119,6 +135,9 @@ namespace EXAMENMVC.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Usuarios");
+
             migrationBuilder.DropTable(
                 name: "Vehiculos");
 

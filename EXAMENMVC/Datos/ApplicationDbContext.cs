@@ -7,6 +7,7 @@ namespace EXAMENMVC.Datos
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
+        public DbSet<Usuario>Usuarios { get; set; }
         public DbSet<Marca> Marcas { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<Vehiculo> Vehiculos { get; set; }

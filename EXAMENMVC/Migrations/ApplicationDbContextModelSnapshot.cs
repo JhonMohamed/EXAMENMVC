@@ -116,6 +116,31 @@ namespace EXAMENMVC.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EXAMENMVC.Models.Usuario", b =>
+                {
+                    b.Property<int>("IdUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"), 1L, 1);
+
+                    b.Property<string>("Clave")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdUsuario");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("EXAMENMVC.Models.Vehiculo", b =>
                 {
                     b.Property<int>("IDVEHICULO")
@@ -127,6 +152,10 @@ namespace EXAMENMVC.Migrations
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imagen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ModeloIDMODELO")
                         .HasColumnType("int");

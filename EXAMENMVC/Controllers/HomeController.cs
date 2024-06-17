@@ -1,12 +1,16 @@
 ﻿using EXAMENMVC.Datos;
 using EXAMENMVC.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EXAMENMVC.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -47,6 +51,11 @@ namespace EXAMENMVC.Controllers
         {
             var modelos = _contexto.Modelos.Where(x => x.MarcaIDMARCA == IDMARCA).ToList();
             return Json(modelos);
+        }
+        public async Task<IActionResult> Salir()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Acceso");
         }
     }
 }
